@@ -18,6 +18,11 @@ namespace IndianCensusAnalyserTest
         public static string wrongIndianStateCensusFileType = @"C:\Users\Chetan\source\repos\IndianCensusAnalyser\IndianCensusAnalyserTest\CSV Files\IndiaStateCensusData.txt";
         public static string wrongHeaderIndianStateCensusFilePath = @"C:\Users\Chetan\source\repos\IndianCensusAnalyser\IndianCensusAnalyserTest\CSV Files\WrongIndiaStateCensusData.csv";
         public static string wrongDelimeterIndianStateCensusFilePath = @"C:\Users\Chetan\source\repos\IndianCensusAnalyser\IndianCensusAnalyserTest\CSV Files\DelimiterIndiaStateCensusData.csv";
+        ///File path definition for test cases while implementing the Use Case 2 for the Indian State Code Data Analysis.
+        public static string wrongIndianStateCodeFilePath = @"C:\Users\Chetan\source\repo\IndianCensusAnalyser\IndianCensusAnalyserTest\CSV Files\IndiaStateCode.csv";
+        public static string wrongIndianStateCodeFileType = @"C:\Users\Chetan\source\repos\IndianCensusAnalyser\IndianCensusAnalyserTest\CSV Files\IndiaStateCode.txt";
+        public static string wrongHeaderIndianStateCodeFilePath = @"C:\Users\Chetan\source\repos\IndianCensusAnalyser\IndianCensusAnalyserTest\CSV Files\WrongIndiaStateCode.csv";
+        public static string wrongDelimeterIndianStateCodeFilePath = @"C:\Users\Chetan\source\repos\IndianCensusAnalyser\IndianCensusAnalyserTest\CSV Files\DelimiterIndiaStateCode.csv";
         ///Instance for the Census Analyser Class
         CensusAnalyser censusAnalyser;
         ///A dictionary to store the data from the Indian Census Data file
@@ -79,6 +84,52 @@ namespace IndianCensusAnalyserTest
         {
             var censusException = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.LoadCensusData(CensusAnalyser.Country.INDIA, wrongHeaderIndianStateCensusFilePath, indianStateCensusHeaders));
             Assert.AreEqual(CensusAnalyserException.ExceptionType.INCORRECT_HEADER, censusException.eType);
+        }
+        /// <summary>
+        /// TC 2.1 - To get the records and to assert whether the count of all the records matches to manually addressed or not
+        /// Using the Dictionary Collection to store the Indian State Census Records and then Count it
+        /// </summary>
+        [Test]
+        public void GivenIndianStateCodeData_ReturnsCorrectCount()
+        {
+            stateRecord = censusAnalyser.LoadCensusData(CensusAnalyser.Country.INDIA, indianStateCodeFilePath, indianStateCodeHeaders);
+            Assert.AreEqual(37, stateRecord.Count);
+        }
+        /// <summary>
+        /// TC 2.2 - To pass a wrong file path and assert whether the custom exception of file not found is returned or not
+        /// </summary>
+        [Test]
+        public void GivenWrongStateCodeFile_ShouldReturnCustomException()
+        {
+            var indianStateCensusResult = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.LoadCensusData(CensusAnalyser.Country.INDIA, wrongIndianStateCodeFilePath, indianStateCodeHeaders));
+            Assert.AreEqual(CensusAnalyserException.ExceptionType.FILE_NOT_FOUND, indianStateCensusResult.eType);
+        }
+        /// <summary>
+        /// TC 2.3 - To pass a wrong file type for state code and the correct file name and assert whether the custom exception of file not found is returned or not
+        /// </summary>
+        [Test]
+        public void GivenWrongStateCodeFileType_ShouldReturnCustomException()
+        {
+            var indianStateCensusResult = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.LoadCensusData(CensusAnalyser.Country.INDIA, wrongIndianStateCodeFileType, indianStateCodeHeaders));
+            Assert.AreEqual(CensusAnalyserException.ExceptionType.INVALID_FILE_TYPE, indianStateCensusResult.eType);
+        }
+        /// <summary>
+        /// TC 2.4 - To pass a wrong delimeter in the Indian State Code File and the correct file name and assert whether the custom exception of file not found is returned or not
+        /// </summary>
+        [Test]
+        public void GivenWrongStateCodeDelimeter_ShouldReturnCustomException()
+        {
+            var indianStateCensusResult = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.LoadCensusData(CensusAnalyser.Country.INDIA, wrongDelimeterIndianStateCodeFilePath, indianStateCodeHeaders));
+            Assert.AreEqual(CensusAnalyserException.ExceptionType.INCORRECT_DELIMITER, indianStateCensusResult.eType);
+        }
+        /// <summary>
+        /// TC 2.5 - To pass a wrong header in the Indian State Code File and the correct file name and assert whether the custom exception of incorrect header is returned or not
+        /// </summary>
+        [Test]
+        public void GivenStateCodeWrongHeader_ShouldReturnCustomException()
+        {
+            var indianStateCensusResult = Assert.Throws<CensusAnalyserException>(() => censusAnalyser.LoadCensusData(CensusAnalyser.Country.INDIA, wrongHeaderIndianStateCodeFilePath, indianStateCodeHeaders));
+            Assert.AreEqual(CensusAnalyserException.ExceptionType.INCORRECT_HEADER, indianStateCensusResult.eType);
         }
     }
 }
